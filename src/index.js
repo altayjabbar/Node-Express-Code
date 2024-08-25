@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+app.use(express.json())
+
 
 const mokusers = ([
   { id: 1, username: 'Jabbar', name: 'Altay' },
@@ -25,8 +27,16 @@ app.get('/api/users', (req, res) => {
     mokusers.filter((user) => user[filter].includes(value)))
 
   return res.send(mokusers); 
-
 });
+
+app.post('/api/users',(req,res) =>{
+  console.log(req.body)
+  const {body}= req;
+  const newuser = {id: mokusers[mokusers.length-1].id+1, ...body}
+  mokusers.push(newuser)
+  return res.status(201).json(newuser);
+})
+
 app.get('/api/users/:id',(req,res) => {
   console.log(req.params);
   const parsedId = parseInt(req.params.id);
