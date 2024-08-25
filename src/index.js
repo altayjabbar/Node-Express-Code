@@ -58,7 +58,35 @@ app.put('/api/users/:id',(req,res) => {
   }
 })
 
+app.patch('/api/users/:id',(req,res) =>{
+  const{id}= req.params;
+  const{username,name} = req.body;
 
+  const user = mokusers.find(user => user.id ===parseInt(id));
+
+  if (user){
+    if(username) user.username = username;
+    if (name) user.name = name;
+
+    return res.status(200).json(user);
+  }else{
+    return res.status(404).json({messsage:'User not defined'});
+  }
+
+})
+
+app.delete('/api/users/:id', (req, res) => {
+  const { id } = req.params;
+
+  const userIndex = mokusers.findIndex(user => user.id === parseInt(id));
+
+  if (userIndex !== -1) {
+    const deletedUser = mokusers.splice(userIndex, 1);
+    return res.status(200).json({ message: 'User deleted successfully', user: deletedUser });
+  } else {
+    return res.status(404).json({ message: 'User not found' });
+  }
+});
 
 
 
