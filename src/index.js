@@ -28,7 +28,7 @@ app.get('/api/users', (req, res) => {
 
   return res.send(mokusers); 
 });
-
+// add a user in mokusers
 app.post('/api/users',(req,res) =>{
   console.log(req.body)
   const {body}= req;
@@ -36,6 +36,31 @@ app.post('/api/users',(req,res) =>{
   mokusers.push(newuser)
   return res.status(201).json(newuser);
 })
+// add a user global
+app.post('/api/users',(req,res) => {
+  
+  const x = {id:4,username:'Tomas',name:'valvensiya'}
+  return res.status(201).json(x)
+})
+
+app.put('/api/users/:id',(req,res) => {
+  const{id} = req.params;
+  const{username,name} = req.body;
+  const user = mokusers.find(user => user.id ===parseInt(id));
+
+  if (user){
+    if(username) user.username = username;
+    if (name) user.name = name;
+
+    return res.status(200).json(user);
+  }else{
+    return res.status(404).json({messsage:'User not defined'});
+  }
+})
+
+
+
+
 
 app.get('/api/users/:id',(req,res) => {
   console.log(req.params);
